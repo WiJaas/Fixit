@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("View/.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("View/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400); // Adjusted size to fit the form
         stage.setTitle("Fixit App - User Registration");
         stage.setScene(scene);
