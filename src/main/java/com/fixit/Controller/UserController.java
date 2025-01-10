@@ -72,6 +72,8 @@ public class UserController {
         }
     }
 
+
+
     // Helper method to show alerts to the user
     private void showAlert(String title, String message, AlertType alertType) {
         Alert alert = new Alert(alertType);

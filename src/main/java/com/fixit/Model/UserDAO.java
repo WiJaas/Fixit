@@ -33,9 +33,30 @@ public class UserDAO extends BaseDAO<User> {
     }
 
     @Override
-  public User getOne(int id) throws SQLException {
-        return null;  // Return null if user is not found
+    public User getOne(int id) throws SQLException {
+        User user = null;
+        String sql = "SELECT * FROM user WHERE id_user = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = new User(
+                            resultSet.getInt("id_user"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getString("role"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("department")
+                    );
+                }
+            }
+        }
+        return user;
     }
+
+
 
     @Override
     public List<User> getAll() throws SQLException {
@@ -66,6 +87,31 @@ public class UserDAO extends BaseDAO<User> {
         return userList;
     }
 
+    public int findUserIdByUsernameAndPassword(String username, String password) throws Exception {
+        String query = "SELECT id FROM users WHERE username = ? AND password = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id"); // Récupérer uniquement la colonne ID
+                } else {
+                    throw new Exception("Utilisateur introuvable avec ces identifiants.");
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void delete(User user) throws SQLException {
+        String query = "DELETE FROM user WHERE id_user = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, user.getId());
+            ps.executeUpdate();
+        }
+    }
 
 
 }

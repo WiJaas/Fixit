@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Label?>
+<?import java.lang.String?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.geometry.Insets?>
+<GridPane xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/17" fx:controller="com.fixit.Controller.EmployeeController">
+
+    <!-- Configuration générale -->
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Titre de la page -->
+    <Label text="Incident Form" style="-fx-font-size: 18; -fx-font-weight: bold;" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" alignment="CENTER"/>
+
+    <!-- Label et champ pour le Titre -->
+    <Label text="Title:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <TextField fx:id="titleField" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Enter Title"/>
+
+    <!-- Label et champ pour la Description -->
+    <Label text="Description:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <TextArea fx:id="descriptionField" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Enter Description" prefRowCount="4" wrapText="true"/>
+
+    <!-- Label et ComboBox pour le Type -->
+    <Label text="Type:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="typeBox" GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="Select Type">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Problèmes Techniques"/>
+                <String fx:value="Problèmes Employés"/>
+                <String fx:value="Incidents de Sécurité"/>
+                <String fx:value="Problèmes de Performance"/>
+            </FXCollections>
+
+        </items>
+    </ComboBox>
+
+    <!-- Label et ComboBox pour la Priorité -->
+    <Label text="Priority:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="priorityBox" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="Select Priority">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Low"/>
+                <String fx:value="Medium"/>
+                <String fx:value="High"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+
+    <!-- Buttons -->
+    <HBox spacing="10" GridPane.rowIndex="6" GridPane.columnIndex="1" alignment="CENTER_RIGHT">
+        <Button text="Save Incident" onAction="#handleSaveIncident"/>
+        <Button text="Cancel" />
+    </HBox>
+
+</GridPane>

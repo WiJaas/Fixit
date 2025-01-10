@@ -1,0 +1,116 @@
+package com.fixit.Controller;
+
+import com.fixit.Model.Incident;
+import com.fixit.Model.IncidentDAO;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+public class EmployeeController {
+    // Champs liés à l'interface utilisateur (via FXML)
+    @FXML
+    private TextField titleField;
+
+    @FXML
+    private TextArea descriptionField;
+
+    @FXML
+    private TextField userIdTextField;
+
+    @FXML
+    private ComboBox<String> typeBox;
+
+    @FXML
+    private ComboBox<String> priorityBox;
+
+
+
+        // Référence à une instance d'IncidentDAO pour gérer les données
+    private final IncidentDAO incidentDAO;
+
+    // Constructeur du contrôleur
+    public EmployeeController() throws SQLException {
+        this.incidentDAO = new IncidentDAO(); // Initialisation de l'instance DAO
+    }
+
+
+    @FXML
+    private void handleSaveIncident(ActionEvent event) {
+        try {
+            // Valider que tous les champs requis sont remplis
+            if (titleField.getText().isEmpty() ||
+                    descriptionField.getText().isEmpty() ||
+                    typeBox.getValue() == null ||
+                    priorityBox.getValue() == null){
+
+                // Afficher une alerte si des champs sont manquants
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur de validation");
+                alert.setHeaderText("Champs manquants");
+                alert.setContentText("Veuillez remplir tous les champs obligatoires.");
+                alert.showAndWait();
+                return;
+            }
+
+            // Récupérer les valeurs des champs
+            String title = titleField.getText();
+            String description = descriptionField.getText();
+            String type = typeBox.getValue();
+            String priority = priorityBox.getValue();
+            String status= "Open";
+
+                    ;
+
+            // L'ID utilisateur connecté (par AuthController)
+            int createdBy = AuthController.userId;
+            LocalDateTime creationDate = LocalDateTime.now();
+
+
+            // Create a new user object with the form data
+            Incident newIncident = new Incident(0,title, description,"Open", priority,type,createdBy,null,creationDate,null,null);
+           System.out.println(newIncident.getCreatedBy());
+            // Save the user to the database
+            try {
+                incidentDAO.save(newIncident);
+                showAlert("Success", "Incident saved successfully!", Alert.AlertType.INFORMATION);
+            }
+            catch (SQLException e) {
+                showAlert("Error", "Failed to save incident: " + e.getMessage(), Alert.AlertType.ERROR);
+                e.printStackTrace();
+            }
+
+
+                // Réinitialiser les champs après succès
+                resetIncidentForm();
+
+        }catch (Exception e) {
+            // Gérer toutes les autres erreurs
+            showAlert("Erreur", "Une erreur inattendue s'est produite : " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+        }
+// Méthode pour réinitialiser les champs
+    private void resetIncidentForm() {
+        titleField.clear();
+        descriptionField.clear();
+        typeBox.setValue(null);
+        priorityBox.setValue(null);
+
+
+    }
+// Helper method to show alerts to the user
+private void showAlert(String title, String message, Alert.AlertType alertType) {
+    Alert alert = new Alert(alertType);
+    alert.setTitle(title);
+    alert.setContentText(message);
+    alert.showAndWait();
+}
+
+}
+
