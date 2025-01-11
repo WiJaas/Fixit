@@ -4,13 +4,13 @@ import com.fixit.Model.Incident;
 import com.fixit.Model.IncidentDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+
+import static com.fixit.Controller.AuthController.userLogOut;
 
 public class EmployeeController {
     // Champs liés à l'interface utilisateur (via FXML)
@@ -112,5 +112,9 @@ private void showAlert(String title, String message, Alert.AlertType alertType) 
     alert.showAndWait();
 }
 
+    public void LogOut(ActionEvent actionEvent) throws IOException {
+            userLogOut(actionEvent);
+
+    }
 }
 

@@ -71,12 +71,12 @@ public class AuthController {
                             Main.changeScene("techDashboard.fxml");
                             wronglogin.setText("Welcome Technician!");
                             break;
+
                         case Roles.ADMIN:
                             wronglogin.setText("Welcome Admin!");
                             // Navigate to Admin Dashboard
-                            Main.changeScene("adminMenu.fxml");
 
-
+                            Main.changeScene("userCreation_page.fxml");
                             break;
                         case Roles.EMPLOYEE:
                             wronglogin.setText("Welcome Employee!");
@@ -118,7 +118,6 @@ public class AuthController {
                             wronglogin.setText("Unknown role. Access denied.");
                             break;
                     }
-                    return; // Exit after successful login
                 }
             }
         } catch (SQLException e) {

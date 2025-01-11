@@ -59,47 +59,7 @@
         </items>
     </ComboBox>
 
-    <!-- Informations de contact -->
-    <Label text="Contact Info:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
-    <TextField fx:id="contactInfoField" GridPane.rowIndex="5" GridPane.columnIndex="1" promptText="Enter Contact Info" />
 
-    <!-- Première section : Informations utilisateur -->
-    <Label text="First Name:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
-    <TextField fx:id="firstNameField" GridPane.rowIndex="6" GridPane.columnIndex="1" promptText="Enter First Name" />
-
-    <Label text="Last Name:" GridPane.rowIndex="7" GridPane.columnIndex="0" />
-    <TextField fx:id="lastNameField" GridPane.rowIndex="7" GridPane.columnIndex="1" promptText="Enter Last Name" />
-
-    <Label text="Username:" GridPane.rowIndex="8" GridPane.columnIndex="0" />
-    <TextField fx:id="usernameField" GridPane.rowIndex="8" GridPane.columnIndex="1" promptText="Enter Username" />
-
-    <Label text="Password:" GridPane.rowIndex="9" GridPane.columnIndex="0" />
-    <PasswordField fx:id="passwordField" GridPane.rowIndex="9" GridPane.columnIndex="1" promptText="Enter Password" />
-
-    <!-- Département -->
-    <Label text="Department:" GridPane.rowIndex="10" GridPane.columnIndex="0" />
-    <ComboBox fx:id="departmentComboBox" GridPane.rowIndex="10" GridPane.columnIndex="1" promptText="Select Department">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="IT" />
-                <String fx:value="HR" />
-                <String fx:value="Finance" />
-                <String fx:value="Marketing" />
-                <String fx:value="Operations" />
-            </FXCollections>
-        </items>
-    </ComboBox>
-
-    <!-- Rôle -->
-    <Label text="Role:" GridPane.rowIndex="11" GridPane.columnIndex="0" />
-    <ComboBox fx:id="roleComboBox" GridPane.rowIndex="11" GridPane.columnIndex="1" promptText="Select Role">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Employee" />
-                <String fx:value="Technician" />
-            </FXCollections>
-        </items>
-    </ComboBox>
 
     <!-- Bouton Enregistrer -->
     <Button text="Save Incident" GridPane.rowIndex="12" GridPane.columnIndex="1" onAction="#handleSaveIncident" />

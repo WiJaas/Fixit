@@ -17,18 +17,18 @@ public class IncidentDAO extends BaseDAO<Incident> {
 
     @Override
     public void save(Incident incident) throws SQLException {
-        System.out.println("Incident#################");
-        System.out.println("Incident#################"+incident.getTitle());
-        System.out.println("Incident#################"+incident.getDescription());
-        System.out.println("Incident#################"+incident.getStatus());
-
-        System.out.println("Incident#################"+incident.getPriority());
-        System.out.println("Incident#################"+incident.getType());
-        System.out.println("Incident#################"+incident.getCreatedBy());
-        System.out.println("Incident#################"+incident.getAssignedTo());
-        System.out.println("Incident#################"+incident.getCreationDate());
-        System.out.println("Incident#################"+incident.getResolutionDate());
-        System.out.println("Incident#################"+incident.getFeedback());
+//        System.out.println("Incident#################");
+//        System.out.println("Incident#################"+incident.getTitle());
+//        System.out.println("Incident#################"+incident.getDescription());
+//        System.out.println("Incident#################"+incident.getStatus());
+//
+//        System.out.println("Incident#################"+incident.getPriority());
+//        System.out.println("Incident#################"+incident.getType());
+//        System.out.println("Incident#################"+incident.getCreatedBy());
+//        System.out.println("Incident#################"+incident.getAssignedTo());
+//        System.out.println("Incident#################"+incident.getCreationDate());
+//        System.out.println("Incident#################"+incident.getResolutionDate());
+//        System.out.println("Incident#################"+incident.getFeedback());
 
 
 

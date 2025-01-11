@@ -6,21 +6,33 @@ import com.fixit.Model.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
 
 import static com.fixit.Controller.AuthController.userLogOut;
 
-public class AdminController {
+public class AdminController  implements Initializable {
     public AnchorPane mainContentArea;
     public Button logoutButton;
     public GridPane userCreationForm;
@@ -32,6 +44,7 @@ public class AdminController {
     public Button ok;
     public Button delete;
     public Button home;
+    public Button HomeButton;
     @FXML
     private TextField userIdField;
 
@@ -83,44 +96,49 @@ public class AdminController {
     }
 
     // Method to load the user creation form
-    @FXML
-    private void Click_CreateUser() {
+//    @FXML
+//    private void Click_CreateUser() {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fixit/userCreation_page.fxml"));
+//            Node userCreationView = loader.load();
+//
+//            // Check if mainContentArea is null
+//            if (mainContentArea == null) {
+//                System.out.println("mainContentArea is null. Check FXML fx:id and controller setup.");
+//                return;
+//            }
+//
+//            // Clear the current content and set the new view
+//            mainContentArea.getChildren().clear();
+//            mainContentArea.getChildren().add(userCreationView);
+//
+//
+//
+//            // Set anchors to center the view
+//            AnchorPane.setTopAnchor(userCreationView, 0.0);
+//            AnchorPane.setBottomAnchor(userCreationView, 0.0);
+//            AnchorPane.setLeftAnchor(userCreationView, 0.0);
+//            AnchorPane.setRightAnchor(userCreationView, 0.0);
+//
+//            // Change the "Logout" button to become "Home"
+//            if (logoutButton != null) {
+//                logoutButton.setText("Home");
+//                logoutButton.setOnAction(event -> navigateToHome());
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+@FXML
+    public void goToReportsPage(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fixit/userCreation_page.fxml"));
-            Node userCreationView = loader.load();
-
-            // Check if mainContentArea is null
-            if (mainContentArea == null) {
-                System.out.println("mainContentArea is null. Check FXML fx:id and controller setup.");
-                return;
-            }
-
-            // Clear the current content and set the new view
-            mainContentArea.getChildren().clear();
-            mainContentArea.getChildren().add(userCreationView);
-
-
-
-            // Set anchors to center the view
-            AnchorPane.setTopAnchor(userCreationView, 0.0);
-            AnchorPane.setBottomAnchor(userCreationView, 0.0);
-            AnchorPane.setLeftAnchor(userCreationView, 0.0);
-            AnchorPane.setRightAnchor(userCreationView, 0.0);
-
-            // Change the "Logout" button to become "Home"
-            if (logoutButton != null) {
-                logoutButton.setText("Home");
-                logoutButton.setOnAction(event -> navigateToHome());
-            }
+            Parent reportPage = FXMLLoader.load(getClass().getResource("/com/fixit/report_page.fxml"));
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(reportPage));
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Failed to load the report page.");
         }
-    }
-
-    // Method to load the view users table
-    @FXML
-    private void Click_ViewUser() {
-        loadUI("viewUser_page.fxml");
     }
 
     // Method to load the report view
@@ -179,15 +197,16 @@ public class AdminController {
     private void navigateToHome() {
         try {
             // Load the homepage view (e.g., home_page.fxml)
-            Main.changeScene("/com/fixit/adminMenu.fxml");
+            Main.changeScene("/com/fixit/userCreation_page.fxml");
 
             // Replace the main content area with the homepage view
             if (mainContentArea != null) {
 
 
                 // Reset the button's text and action to "Logout"
-                logoutButton.setText("Logout");
-System.out.println("You're logged out");            }
+//                logoutButton.setText("Logout");
+//System.out.println("You're logged out");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -208,6 +227,7 @@ System.out.println("You're logged out");            }
     }
 
     public void onSaveButtonClick(ActionEvent actionEvent) {
+        //Retrieve Infos from the fxml form
         String username = usernameField.getText();
         String password = passwordField.getText();
         String role = roleComboBox.getValue();
@@ -236,55 +256,108 @@ System.out.println("You're logged out");            }
 
     @FXML
     protected void onDeleteButtonClick() {
-        try {
-            int selectedIndex = mytab.getSelectionModel().getSelectedIndex();
-            if (selectedIndex <= -1) {
-                return;
-            }
-
-            User selectedUser = mytab.getSelectionModel().getSelectedItem();
-            userDAO.delete(selectedUser);  // Deleting the selected user
-
-            UpdateTable(); // Refresh table after deleting
-        } catch (SQLException e) {
-            e.printStackTrace();  // Handle the exception or show an error message
-        }
-    }
-    // Update table method to display the data
-    public void UpdateTable(){
-        col_id.setCellValueFactory(new PropertyValueFactory<>("id_user"));
-        col_username.setCellValueFactory(new PropertyValueFactory<>("username"));
-
-        col_password.setCellValueFactory(new PropertyValueFactory<>("password"));
-        col_role.setCellValueFactory(new PropertyValueFactory<>("role"));
-        col_department.setCellValueFactory(new PropertyValueFactory<>("department"));
-        col_firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        col_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-
-
-
-
-        mytab.setItems(getDataUsers());
+//        try {
+//            int selectedIndex = mytab.getSelectionModel().getSelectedIndex();
+//            if (selectedIndex <= -1) {
+//                return;
+//            }
+//
+//            User selectedUser = mytab.getSelectionModel().getSelectedItem();
+//            userDAO.delete(selectedUser);  // Deleting the selected user
+//
+//            UpdateTable(); // Refresh table after deleting
+//        } catch (SQLException e) {
+//            e.printStackTrace();  // Handle the exception or show an error message
+//        }
     }
 
     public void OnGoHomeClick(ActionEvent actionEvent) {
         navigateToHome();
     }
 
-    public static ObservableList<User> getDataUsers(){
-
-        UserDAO usedao;
-
+    public static ObservableList<User> getDataUsers() {
         ObservableList<User> listfx = FXCollections.observableArrayList();
 
         try {
-            usedao = new UserDAO();
-            listfx.addAll(usedao.getAll());
+            UserDAO userDAO = new UserDAO();
+            // Fetch all users and add to the list
+            listfx.addAll(userDAO.getAll());
+
+            // Filter users to include only Employee and Technician roles, and exclude the password column
+            listfx = listfx.filtered(user -> {
+                String role = user.getRole() != null ? user.getRole().trim().toLowerCase() : "";
+                return role.equals("employee") || role.equals("technician");
+            });
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace(); // Proper error handling
         }
+       System.out.println(listfx);
+        return listfx;
 
-        return listfx ;
     }
+   //TableView Controller
+
+    int index = -1;
+    public void getSelected(javafx.scene.input.MouseEvent mouseEvent) {
+        index = mytab.getSelectionModel().getSelectedIndex();
+        if (index <= -1) {
+            return;
+        }
+        User selectedUser = mytab.getSelectionModel().getSelectedItem();
+        userIdField.setText(String.valueOf(selectedUser.getId()));
+        usernameField.setText(selectedUser.getUsername());
+        firstNameField.setText(selectedUser.getFirstName());
+        lastNameField.setText(String.valueOf(selectedUser.getLastName()));
+        departmentComboBox.setValue(String.valueOf(selectedUser.getDepartment()));
+        roleComboBox.setValue(String.valueOf(selectedUser.getRole()));
+
+    }
+
+
+    public void OnEditButtonClick(ActionEvent actionEvent) {
+//    }
+    }
+
+    public void UpdateTable() {
+
+
+        ObservableList<User> userList = getDataUsers(); // Fetch data only once
+        if (userList != null) {
+            mytab.getItems().clear(); // Clear old data
+            mytab.setItems(userList); // Add new data
+        } else {
+            System.err.println("No users available to display in the table."); // Warn if data is null
+        }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Safely initialize UI components
+        if (mainContentArea != null) {
+            System.out.println("MainContentArea is initialized.");
+        }
+        // Defer setting up the table to avoid NullPointerException
+        if (mytab != null) {
+            initializeTableColumns(); // Set up table columns
+            UpdateTable();
+        } else {
+            System.err.println("TableView is not properly initialized. Skipping table setup.");
+        }}
+        private void initializeTableColumns() {
+
+            // Set up table columns with PropertyValueFactory
+            col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+            col_username.setCellValueFactory(new PropertyValueFactory<>("username"));
+            col_role.setCellValueFactory(new PropertyValueFactory<>("role"));
+            col_department.setCellValueFactory(new PropertyValueFactory<>("department"));
+            col_firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+            col_lastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+    }
+
+
+
+
+
 }

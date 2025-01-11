@@ -3,7 +3,7 @@ module com.fixit {
     requires javafx.fxml;
 
     requires java.sql;
-
+    exports com.fixit.Model;
 
 
     opens com.fixit to javafx.fxml;

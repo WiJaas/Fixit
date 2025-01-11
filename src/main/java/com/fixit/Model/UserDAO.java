@@ -1,11 +1,11 @@
 package com.fixit.Model;
 
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 public class UserDAO extends BaseDAO<User> {
@@ -34,57 +34,37 @@ public class UserDAO extends BaseDAO<User> {
 
     @Override
     public User getOne(int id) throws SQLException {
-        User user = null;
-        String sql = "SELECT * FROM user WHERE id_user = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    user = new User(
-                            resultSet.getInt("id_user"),
-                            resultSet.getString("username"),
-                            resultSet.getString("password"),
-                            resultSet.getString("role"),
-                            resultSet.getString("first_name"),
-                            resultSet.getString("last_name"),
-                            resultSet.getString("department")
-                    );
-                }
-            }
-        }
-        return user;
+        return null;
     }
 
 
 
     @Override
     public List<User> getAll() throws SQLException {
-        List<User> userList = new ArrayList<User>();
-        String sql = "SELECT * FROM user";  // Query to select all users
+        List<User> users = new ArrayList<>();
+        String query = "SELECT id_user, username, password, role, first_name, last_name, department FROM user";
 
-        // Using try-with-resources to ensure statement and resultSet are closed properly
-        try (Statement statement = this.connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-
+        try (
+                PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+                ResultSet resultSet = preparedStatement.executeQuery()
+        ) {
             while (resultSet.next()) {
-                // Adding each user to the list
-                userList.add(new User(
-                        resultSet.getInt("id_user"),  // Assuming 'id' is the first column
-                        resultSet.getString("username"),  // Assuming 'username' is the second column
-                        resultSet.getString("password"),  // Assuming 'password' is the third column
-                        resultSet.getString("role"),  // Assuming 'role' is the fourth column
-                        resultSet.getString("first_name"),  // Assuming 'first_name' is the fifth column
-                        resultSet.getString("last_name"),   // Assuming 'last_name' is the sixth column
-                        resultSet.getString("department")  // Assuming 'department' is the seventh column
+                users.add(new User(
+                        resultSet.getInt("id_user"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("role"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("department")
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();  // Handle exceptions properly
-            throw e;  // Rethrow exception after logging it
+            // Log et propagation de l'exception
+            System.err.println("Erreur lors de la récupération des utilisateurs : " + e.getMessage());
+            throw e;
         }
-
-        return userList;
+        return users;
     }
 
     public int findUserIdByUsernameAndPassword(String username, String password) throws Exception {

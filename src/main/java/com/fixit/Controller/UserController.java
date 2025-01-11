@@ -2,12 +2,12 @@ package com.fixit.Controller;
 
 import com.fixit.Model.User;
 import com.fixit.Model.UserDAO;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 
@@ -29,9 +29,12 @@ public class UserController {
     private TextField firstNameField;  // Add field for first name
 
     @FXML
-    private TextField lastNameField;   // Add field for last name
+    private TextField lastNameField;
+    @FXML
+    private TableView<User> mytab;// Add field for last name
 
     private UserDAO userDAO;
+
 
     // Initialize the controller and UserDAO
     public UserController() {
@@ -81,4 +84,9 @@ public class UserController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
+
+
+
 }
