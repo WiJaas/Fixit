@@ -1,10 +1,12 @@
 package com.fixit.Controller;
 
+import com.fixit.Main;
 import com.fixit.Model.Incident;
 import com.fixit.Model.IncidentDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,6 +15,10 @@ import java.time.LocalDateTime;
 import static com.fixit.Controller.AuthController.userLogOut;
 
 public class EmployeeController {
+    public BorderPane mainBorderPane;
+    public Button HomeButton;
+    public Button logoutButton;
+    public ComboBox<String> statusBox;
     // Champs liés à l'interface utilisateur (via FXML)
     @FXML
     private TextField titleField;
@@ -63,9 +69,8 @@ public class EmployeeController {
             String description = descriptionField.getText();
             String type = typeBox.getValue();
             String priority = priorityBox.getValue();
-            String status= "Open";
 
-                    ;
+
 
             // L'ID utilisateur connecté (par AuthController)
             int createdBy = AuthController.userId;
@@ -116,5 +121,29 @@ private void showAlert(String title, String message, Alert.AlertType alertType) 
             userLogOut(actionEvent);
 
     }
+
+
+    private void navigateToHome() {
+        try {
+            // Load the homepage view (e.g., home_page.fxml)
+            Main.changeScene("/com/fixit/employeeHome.fxml");
+
+            // Replace the main content area with the homepage view
+//            if (mainBorderPane != null) {
+//
+//
+//                // Reset the button's text and action to "Logout"
+////                logoutButton.setText("Logout");
+////System.out.println("You're logged out");
+//            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void OnGoHomeClick(ActionEvent actionEvent) {
+        navigateToHome();
+    }
+
 }
 

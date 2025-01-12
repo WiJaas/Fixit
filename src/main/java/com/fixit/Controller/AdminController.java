@@ -5,6 +5,7 @@ import com.fixit.Model.User;
 import com.fixit.Model.UserDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
@@ -141,40 +142,6 @@ public class AdminController  implements Initializable {
         }
     }
 
-    // Method to load the report view
-    @FXML
-    private void Click_Report() {
-        try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fixit/report_page.fxml"));
-        Node reportView = loader.load();
-
-        // Check if mainContentArea is null
-        if (mainContentArea == null) {
-            System.out.println("mainContentArea is null. Check FXML fx:id and controller setup.");
-            return;
-        }
-
-        // Clear the current content and set the new view
-        mainContentArea.getChildren().clear();
-        mainContentArea.getChildren().add(reportView);
-
-
-
-        // Set anchors to center the view
-        AnchorPane.setTopAnchor(reportView, 0.0);
-        AnchorPane.setBottomAnchor(reportView, 0.0);
-        AnchorPane.setLeftAnchor(reportView, 0.0);
-        AnchorPane.setRightAnchor(reportView, 0.0);
-
-        // Change the "Logout" button to become "Home"
-        if (logoutButton != null) {
-            logoutButton.setText("Home");
-            logoutButton.setOnAction(event -> navigateToHome());
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    }
 
 
     // Helper method to load FXML into the main content area
@@ -191,25 +158,6 @@ public class AdminController  implements Initializable {
     @FXML
     public void initialize() {
         System.out.println("MainContentArea: " + mainContentArea);
-    }
-
-
-    private void navigateToHome() {
-        try {
-            // Load the homepage view (e.g., home_page.fxml)
-            Main.changeScene("/com/fixit/userCreation_page.fxml");
-
-            // Replace the main content area with the homepage view
-            if (mainContentArea != null) {
-
-
-                // Reset the button's text and action to "Logout"
-//                logoutButton.setText("Logout");
-//System.out.println("You're logged out");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -248,54 +196,40 @@ public class AdminController  implements Initializable {
         try {
             userDAO.save(newUser);
             showAlert("Success", "User saved successfully!", Alert.AlertType.INFORMATION);
+            // Update TableView (use mutable list)
+            if (getDataUsers() != null) {
+                mytab.setItems(FXCollections.observableArrayList(getDataUsers()));
+            }
         } catch (SQLException e) {
             showAlert("Error", "Failed to save user: " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }
 
-    @FXML
-    protected void onDeleteButtonClick() {
-//        try {
-//            int selectedIndex = mytab.getSelectionModel().getSelectedIndex();
-//            if (selectedIndex <= -1) {
-//                return;
-//            }
-//
-//            User selectedUser = mytab.getSelectionModel().getSelectedItem();
-//            userDAO.delete(selectedUser);  // Deleting the selected user
-//
-//            UpdateTable(); // Refresh table after deleting
-//        } catch (SQLException e) {
-//            e.printStackTrace();  // Handle the exception or show an error message
-//        }
+    private void navigateToHome() {
+        try {
+            // Load the homepage view (e.g.
+            // home_page.fxml)
+            Main.changeScene("/com/fixit/userCreation_page.fxml");
+
+            // Replace the main content area with the homepage view
+            if (mainContentArea != null) {
+
+
+                // Reset the button's text and action to "Logout"
+//                logoutButton.setText("Logout");
+//System.out.println("You're logged out");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void OnGoHomeClick(ActionEvent actionEvent) {
         navigateToHome();
     }
 
-    public static ObservableList<User> getDataUsers() {
-        ObservableList<User> listfx = FXCollections.observableArrayList();
 
-        try {
-            UserDAO userDAO = new UserDAO();
-            // Fetch all users and add to the list
-            listfx.addAll(userDAO.getAll());
-
-            // Filter users to include only Employee and Technician roles, and exclude the password column
-            listfx = listfx.filtered(user -> {
-                String role = user.getRole() != null ? user.getRole().trim().toLowerCase() : "";
-                return role.equals("employee") || role.equals("technician");
-            });
-
-        } catch (SQLException e) {
-            e.printStackTrace(); // Proper error handling
-        }
-       System.out.println(listfx);
-        return listfx;
-
-    }
    //TableView Controller
 
     int index = -1;
@@ -314,22 +248,58 @@ public class AdminController  implements Initializable {
 
     }
 
+//needs update
+    public void OnEditButtonClick(ActionEvent event) {
+        try {
+            UserDAO userDAO = new UserDAO();
 
-    public void OnEditButtonClick(ActionEvent actionEvent) {
-//    }
-    }
+            int selectedIndex = mytab.getSelectionModel().getSelectedIndex();
+            if (selectedIndex == -1) {
+                // Aucun client n'a été sélectionné, rien à faire
+                return;
+            }
 
-    public void UpdateTable() {
+            User selectedUser = mytab.getSelectionModel().getSelectedItem();
+            int id = selectedUser.getId();
+            String password = selectedUser.getPassword();
+            String username = this.usernameField.getText();
+            if (passwordField.getText() != null){
+                 password = this.passwordField.getText();
+            }
+            String role = this.roleComboBox.getValue();
+            String firstName = this.firstNameField.getText();
+            String lastName = this.lastNameField.getText();
+            String department = this.departmentComboBox.getValue();
 
 
-        ObservableList<User> userList = getDataUsers(); // Fetch data only once
-        if (userList != null) {
-            mytab.getItems().clear(); // Clear old data
-            mytab.setItems(userList); // Add new data
-        } else {
-            System.err.println("No users available to display in the table."); // Warn if data is null
+
+            // Met à jour l'objet client avec les nouvelles valeurs
+            selectedUser.setUsername(username);
+            selectedUser.setPassword(password);
+            selectedUser.setRole(role);
+            selectedUser.setFirstName(firstName);
+            selectedUser.setLastName(lastName);
+            selectedUser.setDepartment(department);
+
+            // Met à jour le client dans la base de données
+            userDAO.update(selectedUser);
+
+            // Clear TableView fields
+            userIdField.clear();
+            usernameField.clear();
+            passwordField.clear();
+            firstNameField.clear();
+            lastNameField.clear();
+            departmentComboBox.setValue(null);
+            roleComboBox.setValue(null);
+
+            // Met à jour la table
+            UpdateTable();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -358,6 +328,74 @@ public class AdminController  implements Initializable {
 
 
 
+    @FXML
+    protected void onDeleteButtonClick() {
+        try {
+            int myIndex = mytab.getSelectionModel().getSelectedIndex();
 
+            // Ensure an item is selected before attempting deletion
+            if (myIndex < 0) {
+                showAlert("Error", "No user selected for deletion!", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Fetch item to delete
+            User selectedUser = mytab.getItems().get(myIndex);
+            if (selectedUser == null) {
+                showAlert("Error", "Failed to retrieve selected user for deletion.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Call DAO method to delete
+            userDAO.delete(selectedUser);
+
+            // Clear TableView fields
+            userIdField.clear();
+            usernameField.clear();
+            passwordField.clear();
+            firstNameField.clear();
+            lastNameField.clear();
+            departmentComboBox.setValue(null);
+            roleComboBox.setValue(null);
+
+            // Update TableView (use mutable list)
+            if (getDataUsers() != null) {
+                mytab.setItems(FXCollections.observableArrayList(getDataUsers()));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to delete user: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    // Update getDataUsers method
+    public static ObservableList<User> getDataUsers() {
+        ObservableList<User> listfx = FXCollections.observableArrayList();
+        try {
+            UserDAO userDAO = new UserDAO();
+            listfx.addAll(userDAO.getAll());
+
+            // Ensure filtered list is wrapped in a mutable ObservableList
+            listfx = FXCollections.observableArrayList(listfx.filtered(user -> {
+                String role = user.getRole() != null ? user.getRole().trim().toLowerCase() : "";
+                return role.equals("employee") || role.equals("technician");
+            }));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listfx;
+    }
+
+    // Update UpdateTable method
+    public void UpdateTable() {
+        ObservableList<User> userList = getDataUsers();
+        if (userList != null) {
+            mytab.setItems(FXCollections.observableArrayList(userList));
+        } else {
+            System.err.println("No users available to display in the table.");
+        }
+    }
 
 }

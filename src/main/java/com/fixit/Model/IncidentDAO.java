@@ -104,6 +104,11 @@ public class IncidentDAO extends BaseDAO<Incident> {
     }
 
     @Override
+    public void update(Incident object) throws SQLException {
+
+    }
+
+    @Override
     public void delete(Incident object) throws SQLException {
 
     }

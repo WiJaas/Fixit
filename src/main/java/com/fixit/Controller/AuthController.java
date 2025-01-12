@@ -81,7 +81,7 @@ public class AuthController {
                         case Roles.EMPLOYEE:
                             wronglogin.setText("Welcome Employee!");
                             // Navigate to Employee Dashboard
-                         Main.changeScene("employeeHome.fxml");
+                         Main.changeScene("incidentCreation_page.fxml");
 //                            try {
 //                                // Récupérer uniquement l'ID de l'utilisateur depuis la base de données
 //                                int userId = userDAO.findUserIdByUsernameAndPassword(username, password);

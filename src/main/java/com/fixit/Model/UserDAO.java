@@ -67,21 +67,21 @@ public class UserDAO extends BaseDAO<User> {
         return users;
     }
 
-    public int findUserIdByUsernameAndPassword(String username, String password) throws Exception {
-        String query = "SELECT id FROM users WHERE username = ? AND password = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("id"); // Récupérer uniquement la colonne ID
-                } else {
-                    throw new Exception("Utilisateur introuvable avec ces identifiants.");
-                }
-            }
-        }
-    }
+//    public int findUserIdByUsernameAndPassword(String username, String password) throws Exception {
+//        String query = "SELECT id FROM users WHERE username = ? AND password = ?";
+//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+//            stmt.setString(1, username);
+//            stmt.setString(2, password);
+//
+//            try (ResultSet rs = stmt.executeQuery()) {
+//                if (rs.next()) {
+//                    return rs.getInt("id"); // Récupérer uniquement la colonne ID
+//                } else {
+//                    throw new Exception("Utilisateur introuvable avec ces identifiants.");
+//                }
+//            }
+//        }
+//    }
 
 
     @Override
@@ -94,4 +94,23 @@ public class UserDAO extends BaseDAO<User> {
     }
 
 
+    @Override
+    public void update(User object) throws SQLException {
+
+        String req = "UPDATE user SET username=?, password=?, role=?, first_name=?, last_name=?, department=? WHERE id_user=?";
+        try (PreparedStatement statement = connection.prepareStatement(req)) {
+            // Setting values for each placeholder in the query
+            statement.setString(1, object.getUsername());
+            statement.setString(2, object.getPassword());
+            statement.setString(3, object.getRole());
+            statement.setString(4, object.getFirstName());
+            statement.setString(5, object.getLastName());
+            statement.setString(6, object.getDepartment());
+            statement.setInt(7, object.getId());
+
+
+            // Execute the update (insert the user into the database)
+            statement.executeUpdate();
+        }
+    }
 }
