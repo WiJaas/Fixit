@@ -2,6 +2,7 @@ package com.fixit.Model;
 
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Incident {
 
@@ -14,10 +15,13 @@ public class Incident {
     private int createdBy;
     private Integer assignedTo; // Peut être null
     private LocalDateTime creationDate;
-    private String resolutionDate;
+    private LocalDateTime resolutionDate;
     private String feedback;
 
-    public Incident(int id, String title, String description, String status, String priority, String type, int createdBy, Integer assignedTo, LocalDateTime dateCreated, String resolutionDate, String feedback) {
+
+
+
+    public Incident(int id, String title, String description, String status, String priority, String type, int createdBy, Integer assignedTo, LocalDateTime dateCreated, LocalDateTime resolutionDate, String feedback) {
 
         this.incidentId = id;
         this.title = title;
@@ -107,11 +111,11 @@ public class Incident {
         this.creationDate = creationDate;
     }
 
-    public String getResolutionDate() {
+    public LocalDateTime getResolutionDate() {
         return resolutionDate;
     }
 
-    public void setResolutionDate(String resolutionDate) {
+    public void setResolutionDate(LocalDateTime resolutionDate) {
         this.resolutionDate = resolutionDate;
     }
 
@@ -122,4 +126,17 @@ public class Incident {
     public void setFeedback(String feedback) {
         this.feedback = feedback;
     }
+
+
+    public String getCreatedByUsername() {
+        try {
+            UserDAO userDAO = new UserDAO(); // Utilisation de votre DAO existant
+            return userDAO.getOne(createdBy).getUsername(); // Obtenir le username associé à l'id
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
+
+
 }

@@ -5,8 +5,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,46 +20,60 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="mainBorderPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fixit.Controller.EmployeeController">
-
     <!-- Top Section: Header -->
     <top>
         <Pane prefHeight="60.0" style="-fx-background-color: #0097b2;" BorderPane.alignment="CENTER">
-            <Label layoutX="20.0" layoutY="10.0" prefHeight="40.0" prefWidth="300.0" style="-fx-font-size: 24px; -fx-text-fill: white;" text="Admin Dashboard">
-                <font>
-                    <Font name="Arial Black" size="24.0" />
-                </font>
-            </Label>
-            <Button fx:id="HomeButton" layoutX="598.0" layoutY="18.0" mnemonicParsing="false" onAction="#OnGoHomeClick" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: #e76f51; -fx-text-fill: white;" text="Home" />
             <Button fx:id="logoutButton" layoutX="677.0" layoutY="18.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="25.0" prefWidth="62.0" style="-fx-background-color: #e76f51; -fx-text-fill: white;" text="Logout" />
-
+         <Label layoutX="14.0" layoutY="11.0" prefHeight="40.0" prefWidth="121.0" style="-fx-font-size: 24px; -fx-text-fill: white;" text="Welcome">
+            <font>
+               <Font name="Arial Black" size="24.0" />
+            </font>
+         </Label>
+             <Label layoutX="119.0" layoutY="14.0" prefHeight="21.0" prefWidth="115.0" style="-fx-font-size: 24px; -fx-text-fill: white;" text="${controller.title}">
+                    <font>
+                     <Font name="Arial Black" size="24.0" />
+                 </font>
+             </Label>
         </Pane>
     </top>
     <!-- Left Section: Navigation Pane -->
     <left>
-        <Pane prefWidth="150.0" style="-fx-background-color: #0097b2;" BorderPane.alignment="CENTER">
+        <Pane prefHeight="600.0" prefWidth="181.0" style="-fx-background-color: #0097b2;" BorderPane.alignment="CENTER">
             <VBox alignment="TOP_CENTER" layoutY="20.0" spacing="20.0" />
         </Pane>
     </left>
     <center>
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+        <children>
 
-           <GridPane alignment="CENTER" hgap="10" vgap="10">
-
+            <Label graphicTextGap="9.0" layoutX="30.0" layoutY="253.0" prefHeight="59.0" prefWidth="214.0" text="My Incidents" textFill="#db7d18">
+               <font>
+                  <Font name="Andalus" size="37.0" />
+               </font>
+               <effect>
+                  <Blend />
+               </effect>
+            </Label>
+           <GridPane alignment="CENTER" hgap="10" layoutX="27.0" layoutY="42.0" prefHeight="358.0" prefWidth="372.0" vgap="15.0">
+               <TextField fx:id="incidentIdField" onMouseClicked="#getSelected" opacity="0.0" prefHeight="25.0" prefWidth="200.0" />
                <!-- Titre de l'incident -->
             <Label text="Title:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
             <TextField fx:id="titleField" promptText="Enter Title" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                <!-- Description de l'incident -->
             <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <TextArea fx:id="descriptionField" promptText="Enter Description" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextArea fx:id="descriptionField" prefHeight="39.0" prefWidth="391.0" promptText="Enter Description" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                <!-- Type de l'incident -->
             <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <ComboBox fx:id="typeBox" promptText="Select Type" GridPane.columnIndex="1" GridPane.rowIndex="2">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Bug" />
-                        <String fx:value="Feature Request" />
-                        <String fx:value="Improvement" />
+                        <String fx:value="Problèmes Techniques" />
+                        <String fx:value="Problèmes Employés" />
+                        <String fx:value="Incidents de Sécurité" />
+                        <String fx:value="Problèmes de Performance" />
+
                     </FXCollections>
                 </items>
             </ComboBox>
@@ -65,31 +83,18 @@
             <ComboBox fx:id="priorityBox" promptText="Select Priority" GridPane.columnIndex="1" GridPane.rowIndex="3">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Low" />
-                        <String fx:value="Medium" />
                         <String fx:value="High" />
-                        <String fx:value="Critical" />
+                        <String fx:value="Medium" />
+                        <String fx:value="Low" />
                     </FXCollections>
                 </items>
             </ComboBox>
 
-               <!-- Statut -->
-            <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <ComboBox fx:id="statusBox" promptText="Select Status" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="New" />
-                        <String fx:value="In Progress" />
-                        <String fx:value="Resolved" />
-                        <String fx:value="Closed" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
-
-   
-   
                <!-- Bouton Enregistrer -->
-            <Button onAction="#handleSaveIncident" text="Save Incident" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+            <Button layoutX="77.0" layoutY="99.0" onAction="#handleSaveIncident" style="-fx-background-color: #0097b2; -fx-text-fill: white;" text="Save Incident" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <font>
+                     <Font name="System Bold" size="12.0" />
+                  </font></Button>
          <columnConstraints>
             <ColumnConstraints />
             <ColumnConstraints />
@@ -102,13 +107,46 @@
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
+            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+            <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
+                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
          </rowConstraints>
         </GridPane>
+              <TableView fx:id="mytab" layoutX="-1.0" layoutY="341.0" onMouseClicked="#getSelected" prefHeight="257.0" prefWidth="800.0">
+            <columns>
+                <TableColumn fx:id="col_id" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="col_title" prefWidth="75.0" text="Title" />
+                <TableColumn fx:id="col_desc" prefWidth="75.0" text="Description" />
+                <TableColumn fx:id="col_type" prefWidth="75.0" text="Type" />
+                <TableColumn fx:id="col_priority" prefWidth="75.0" text="Priority" />
+                <TableColumn fx:id="col_status" prefWidth="75.0" text="Status" />
+                <TableColumn fx:id="col_feedback" text="Feedback">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="feedback" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+            <Label graphicTextGap="9.0" layoutX="32.0" layoutY="9.0" text="Incident Creation" textFill="#db7d18">
+               <font>
+                  <Font name="Andalus" size="21.0" />
+               </font>
+               <effect>
+                  <Blend />
+               </effect>
+            </Label>
+            <VBox layoutX="513.0" layoutY="56.0" prefHeight="197.0" prefWidth="199.0">
+               <children>
+                  <TextArea fx:id="feedbackTextArea" promptText="Enter feedback" visible="false" wrapText="true" />
+                  <Button fx:id="saveFeedbackButton" onAction="#handleSaveFeedback" text="Save Feedback" visible="false" />
+               </children>
+            </VBox>
+        </children>
+        </Pane>
     </center>
 </BorderPane>

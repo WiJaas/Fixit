@@ -1,5 +1,4 @@
 package com.fixit.Model;
-
 import java.sql.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,6 @@ import java.util.List;
 
 
 public class UserDAO extends BaseDAO<User> {
-
     public UserDAO() throws SQLException {
         super();
     }
@@ -34,7 +32,37 @@ public class UserDAO extends BaseDAO<User> {
 
     @Override
     public User getOne(int id) throws SQLException {
-        return null;
+        String query = "SELECT id_user, username, password, role, first_name, last_name, department FROM user WHERE id_user=?";
+        User user = null; // Initialiser à null
+
+        try (
+                PreparedStatement preparedStatement = this.connection.prepareStatement(query)
+        ) {
+            // Injection des paramètres dans la requête
+            preparedStatement.setInt(1, id);
+
+            // Exécution de la requête
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                // S'il y a un résultat, peupler l'objet User
+                if (resultSet.next()) {
+                    user = new User(
+                            resultSet.getInt("id_user"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getString("role"),
+                            resultSet.getString("first_name"),
+                            resultSet.getString("last_name"),
+                            resultSet.getString("department")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            // Log et propagation de l'erreur
+            System.err.println("Erreur lors de la récupération de l'utilisateur : " + e.getMessage());
+            throw e;
+        }
+
+        return user; // Retournera null si aucun utilisateur n'est trouvé
     }
 
 

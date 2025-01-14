@@ -6,6 +6,7 @@ module com.fixit {
     exports com.fixit.Model;
 
 
+
     opens com.fixit to javafx.fxml;
     exports com.fixit;
     exports com.fixit.Controller;

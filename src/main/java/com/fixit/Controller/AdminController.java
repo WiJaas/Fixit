@@ -280,9 +280,14 @@ public class AdminController  implements Initializable {
             selectedUser.setFirstName(firstName);
             selectedUser.setLastName(lastName);
             selectedUser.setDepartment(department);
+            System.out.println("##########First check ######### "+selectedUser.getUsername());
+            System.out.println("##########222222 check ######### "+selectedUser.getRole());
 
             // Met à jour le client dans la base de données
             userDAO.update(selectedUser);
+            System.out.println("########## 3333333 check ######### "+selectedUser.getUsername());
+            System.out.println("########## 44444 check ######### "+selectedUser.getUsername());
+
 
             // Clear TableView fields
             userIdField.clear();

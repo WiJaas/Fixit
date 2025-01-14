@@ -11,6 +11,11 @@ public class User {
     private String lastName;
     private String department;
 
+    public User(int id, String username) {
+        this.id = id;
+        this.username = username;
+    }
+
     // Constructor
     public User(int id, String username, String password, String role, String firstName, String lastName, String department) {
         this.id = id;
@@ -43,4 +48,6 @@ public class User {
 
     public String getDepartment() { return department; }
     public void setDepartment(String department) { this.department = department; }
+
+
 }
