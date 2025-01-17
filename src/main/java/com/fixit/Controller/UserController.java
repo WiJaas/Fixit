@@ -1,5 +1,4 @@
 package com.fixit.Controller;
-
 import com.fixit.Model.User;
 import com.fixit.Model.UserDAO;
 import javafx.collections.FXCollections;
@@ -8,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.sql.SQLException;
 
 public class UserController {

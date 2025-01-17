@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="mainBorderPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fixit.Controller.AdminController">
@@ -18,21 +22,74 @@
                     <Font name="Arial Black" size="24.0" />
                 </font>
             </Label>
-            <Button fx:id="HomeButton" layoutX="598.0" layoutY="18.0" mnemonicParsing="false" onAction="#OnGoHomeClick" prefHeight="25.0" prefWidth="61.0" style="-fx-background-color: #e76f51; -fx-text-fill: white;" text="Home" />
-            <Button fx:id="logoutButton" layoutX="677.0" layoutY="18.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="25.0" prefWidth="62.0" style="-fx-background-color: #e76f51; -fx-text-fill: white;" text="Logout" />
-
+            <Button fx:id="HomeButton" layoutX="578.0" layoutY="18.0" mnemonicParsing="false" onAction="#OnGoHomeClick" prefHeight="34.0" prefWidth="81.0" style="-fx-background-color: #e76f51; -fx-text-fill: white;" text="Home" />
+            <Button fx:id="logoutButton" layoutX="677.0" layoutY="18.0" mnemonicParsing="false" onAction="#LogOut" prefHeight="33.0" prefWidth="78.0" style="-fx-background-color: #e76f51; -fx-text-fill: white;" text="Logout" />
         </Pane>
     </top>
-    <!-- Left Section: Navigation Pane -->
-    <left>
-        <Pane prefWidth="150.0" style="-fx-background-color: #0097b2;" BorderPane.alignment="CENTER">
-            <VBox alignment="TOP_CENTER" layoutY="20.0" spacing="20.0" />
-
-            <Button layoutX="15.0" layoutY="101.0" mnemonicParsing="false" onAction="#goToReportsPage" prefWidth="120.0" style="-fx-background-color: #f4a261; -fx-text-fill: white;" text="Report" />
-
-        </Pane>
-    </left>
     <center>
         <Label style="-fx-font-size: 20px;" text="Reports Page" />
     </center>
+   <right>
+
+        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <children>
+
+                <ButtonBar layoutX="271.0" layoutY="302.0" prefHeight="34.0" prefWidth="472.0" />
+                <TableView fx:id="mytabr" layoutX="25.0" layoutY="59.0" onMouseClicked="#getSelected" prefHeight="240.0" prefWidth="972.0">
+                    <columns>
+                        <TableColumn fx:id="col_idr" prefWidth="75.0" text="ID" />
+                        <TableColumn fx:id="col_titler" prefWidth="75.0" text="Title" />
+                        <TableColumn fx:id="col_descr" prefWidth="75.0" text="Description" />
+                        <TableColumn fx:id="col_typer" prefWidth="75.0" text="Type" />
+                        <TableColumn fx:id="col_priorityr" prefWidth="75.0" text="Priority" />
+                        <TableColumn fx:id="col_statusr" prefWidth="55.77783203125" text="Status" />
+                        <TableColumn fx:id="col_createdByr" prefWidth="99.55551147460938" text="Employee Name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="created_by" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="col_TechId" text="TechnicienId">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="tech_id" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="col_TechName" prefWidth="109.99993896484375" text="Technicien Name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="tech_name" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="col_createdDate" prefWidth="82.666748046875" text="CreationDate">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="creation_date" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="col_resolutionDate" prefWidth="94.0" text="ResolutionDate">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="resolution_date" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="col_Feedback" prefWidth="73.33331298828125" text="Feedback">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="feedback" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+
+                <Label graphicTextGap="9.0" layoutX="35.0" layoutY="12.0" prefHeight="59.0" prefWidth="214.0" text="Incidents" textFill="#db7d18">
+                    <font>
+                        <Font name="Andalus" size="32.0" />
+                    </font>
+                    <effect>
+                        <Blend />
+                    </effect>
+                </Label>
+                <Button fx:id="delete" layoutX="765.0" layoutY="412.0" mnemonicParsing="false" onAction="#onGenerateReportButtonClick" text="Generate a Report" />
+                <Button fx:id="exportIncidentsButton" layoutX="521.0" layoutY="412.0" onAction="#exportIncidentsToCSV" text="Export Incidents" />
+                <Button fx:id="exportUsersButton" layoutX="644.0" layoutY="412.0" onAction="#exportUsersToCSV" prefHeight="31.0" prefWidth="108.0" text="Export Users" />
+            <TextField fx:id="techIdField" layoutX="310.0" layoutY="415.0" />
+
+            </children>
+        </Pane>
+   </right>
 </BorderPane>

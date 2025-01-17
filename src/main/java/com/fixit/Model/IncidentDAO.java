@@ -1,7 +1,5 @@
 package com.fixit.Model;
 
-import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -236,16 +234,21 @@ public class IncidentDAO extends BaseDAO<Incident> {
             stmt.setInt(1, userId);    // Assigne l'utilisateur
             stmt.setString(2, status); // Met à jour le statut
             stmt.setInt(3, incidentId); // Identifie l'incident
+
+
+
             return stmt.executeUpdate() > 0; // Retourne true si la mise à jour réussit
         }
     }
 
-    public boolean MarkAsResolved(int incidentId, int userId, String status) throws SQLException {
-        String query = "UPDATE incident SET assigned_to = ?, status = ? WHERE incident_id = ?";
+    public boolean MarkAsResolved(int incidentId, int userId, String status , LocalDateTime resolutionDate) throws SQLException {
+        String query = "UPDATE incident SET assigned_to = ?, status = ? ,resolution_date = ? WHERE incident_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, userId);    // Assigne l'utilisateur
             stmt.setString(2, status); // Met à jour le statut
-            stmt.setInt(3, incidentId); // Identifie l'incident
+            stmt.setTimestamp(3, Timestamp.valueOf(resolutionDate)); // Identifie l'incident
+            stmt.setInt(4, incidentId); // Identifie l'incident
+
             return stmt.executeUpdate() > 0; // Retourne true si la mise à jour réussit
         }
     }
@@ -280,6 +283,75 @@ public class IncidentDAO extends BaseDAO<Incident> {
 
         return openIncidents;
     }
+
+
+
+    public List<Incident> getIncidents() throws SQLException {
+        List<Incident> reportIncidents = new ArrayList<>();
+        String query = "SELECT * FROM incident";
+
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                // Directement créer un objet Incident
+                reportIncidents.add(new Incident(
+                        rs.getInt("incident_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("status"),
+                        rs.getString("priority"),
+                        rs.getString("type"),
+                        rs.getInt("created_By"),
+                        rs.getInt("assigned_To"),
+                        rs.getTimestamp("creation_date") != null
+                                ? rs.getTimestamp("creation_date").toLocalDateTime() : null,
+                        rs.getTimestamp("resolution_date") != null
+                                ? rs.getTimestamp("resolution_date").toLocalDateTime() : null,
+
+                        rs.getString("feedback")
+                ));
+            }
+        }
+        System.out.println(reportIncidents);
+        return reportIncidents;
+    }
+
+
+    public List<Incident> getIncidentsByTechnician(int technicianId) throws SQLException {
+        List<Incident> technicianIncidents = new ArrayList<>();
+        String query = "SELECT * FROM incident WHERE assigned_to = ?"; // Fetch incidents for the given technician.
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, technicianId); // Set the technician ID
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                // Create Incident objects and add them to the list.
+                technicianIncidents.add(new Incident(
+                        rs.getInt("incident_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("status"),
+                        rs.getString("priority"),
+                        rs.getString("type"),
+                        rs.getInt("created_By"),
+                        rs.getObject("assigned_To", Integer.class),
+                        rs.getTimestamp("creation_date") != null
+                                ? rs.getTimestamp("creation_date").toLocalDateTime() : null,
+                        rs.getTimestamp("resolution_date") != null
+                                ? rs.getTimestamp("resolution_date").toLocalDateTime() : null,
+                        rs.getString("feedback")
+                ));
+            }
+        }
+
+        return technicianIncidents;
+    }
+
 }
+
+
 
 

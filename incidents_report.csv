@@ -1,0 +1,11 @@
+ID,Title,Description,Type,Priority,Status,Created By,Technician ID,Technician Name,Created Date,Resolution Date,Feedback
+17,Password Reset,I can't acess my Teams account because I forgot my password,Problèmes Employés,High,Resolved,27,34,Amal,2025-01-12T17:31:22,2025-01-12T17:31:22,
+18,PC Charger,I need a new PC charger,Problèmes Techniques,Medium,Resolved,26,34,Amal,2025-01-12T22:46:14,2025-01-12T22:46:14,
+26,HardDesk problem,details	,Problèmes Techniques,Medium,Resolved,26,34,Amal,2025-01-15T13:15:32,null,Great Work!
+27,Network Problem,Details	,Problèmes Techniques,High,Resolved,26,34,Amal,2025-01-15T15:26:46,2025-01-15T15:32:21,null
+28,System Crash,The system crashed during a critical operation,Problèmes Techniques,High,Open,26,0,Unknown,2025-01-17T12:01:51,null,null
+29,Network Issue,Network connectivity issues in the main office.,Problèmes Techniques,Medium,Open,26,0,Unknown,2025-01-17T12:02:25,null,null
+30,Problème d'installation du logiciel,Le logiciel ne s'installe pas correctement sur les machines de l'équipe.,Problèmes Techniques,High,Open,26,0,Unknown,2025-01-17T12:08:10,null,null
+31,Baisse de la performance des applications,Les applications internes deviennent lentement réactives en raison d'une charge de travail élevée.,Problèmes de Performance,Medium,Open,26,0,Unknown,2025-01-17T12:08:44,null,null
+32,Account Access,Details,Problèmes Employés,High,Resolved,26,34,Amal,2025-01-17T14:44:02,2025-01-17T14:45:39,Nice Work
+33,Réduction de la performance du serveur,Le serveur montre des signes de ralentissement en raison de charges excessives.,Problèmes de Performance,Low,Resolved,26,34,Amal,2025-01-17T15:02:02,2025-01-17T15:03:11,Great Work

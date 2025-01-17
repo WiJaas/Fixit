@@ -11,4 +11,5 @@ module com.fixit {
     exports com.fixit;
     exports com.fixit.Controller;
     opens com.fixit.Controller to javafx.fxml;
+    requires itextpdf;  // Declare dependency on itextpdf
 }

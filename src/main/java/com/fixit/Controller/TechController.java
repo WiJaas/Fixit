@@ -17,7 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Map;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import static com.fixit.Controller.AuthController.userId;
 import static com.fixit.Controller.AuthController.userLogOut;
@@ -141,7 +141,6 @@ public class TechController implements Initializable {
         // Defer setting up the table to avoid NullPointerException
         if (mytab1 != null || mytab2 != null) {
             initializeTableColumns(); // Set up table columns
-
             initializeTableColumns2(); // Set up table columns
             UpdateTable(mytab1, getOpenIncidents(), "Aucun incident ouvert pour l'instant.");
             UpdateTable(mytab2, getInProgressIncidents(), "Aucun incident en cours pour l'instant.");
@@ -185,7 +184,7 @@ public class TechController implements Initializable {
         try {
             // Récupérer l'ID de l'utilisateur connecté via l'attribut statique
             int currentUserId = userId; // Utilisation directe de votre attribut statique
-
+            LocalDateTime resolutionDate = LocalDateTime.now();
             // Assigner l'incident et mettre à jour le statut
             IncidentDAO inciDAO = new IncidentDAO();
             boolean success = inciDAO.assignIncidentToUserAndUpdateStatus(
@@ -259,11 +258,12 @@ System.out.println(selectedIncident2.getIncidentId());
         try {
             // Récupérer l'ID de l'utilisateur connecté via l'attribut statique
             int currentUserId = userId; // Utilisation directe de votre attribut statique
+            LocalDateTime resolutionDate = LocalDateTime.now();
 
             // Assigner l'incident et mettre à jour le statut
             IncidentDAO inciDAO = new IncidentDAO();
-            boolean success = inciDAO.assignIncidentToUserAndUpdateStatus(
-                    selectedIncident2.getIncidentId(), currentUserId, "Resolved");
+            boolean success = inciDAO.MarkAsResolved(
+                    selectedIncident2.getIncidentId(), currentUserId, "Resolved",resolutionDate);
 
             // Gestion des résultats
             if (success) {

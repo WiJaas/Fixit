@@ -137,6 +137,14 @@ public class Incident {
             return "Unknown";
         }
     }
-
+    public String getAssignedToUsername() {
+        try {
+            UserDAO userDAO = new UserDAO(); // Utilisation de votre DAO existant
+            return userDAO.getOne(assignedTo).getUsername(); // Obtenir le username associé à l'id
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
 
 }
