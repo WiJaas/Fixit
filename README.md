@@ -138,7 +138,7 @@ SQL scripts for creating the database schema are located in the `sql` directory 
 1.  **Clone the Repository:**
 
     ```bash
-    git clone [your_repository_url]
+    git clone 'https://github.com/WiJaas/Fixit.git'
     cd Fixit
     ```
 
